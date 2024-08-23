@@ -1,0 +1,78 @@
+{
+  "general": {
+    "customInventory": true,
+    "allowGunModifyGui": true,
+    "prototype_pack_extraction": false,
+    "animated_pack_extraction": false,
+    "modified_pack_server_kick": false,
+    "directory_pack_server_kick": false,
+    "content_pack_hash_list": [],
+    "drop_extra_slots_on_death": true,
+    "serverTickVerification": true,
+    "serverShotVerification": true,
+    "playerShadowOffset": 1.0,
+    "collisionBorderSizeFixNonPlayer": 0.0
+  },
+  "client": {
+    "hideSecondSkinWhenDressed": true,
+    "enableBloodParticle": true,
+    "gunSmokeCorrectForBSL": true,
+    "gunSmokeCorrectForIterationT": false,
+    "gunFlashEffect": true,
+    "shellEffectCapacity": 64
+  },
+  "shots": {
+    "shot_break_glass": false,
+    "knockback_entity_damage": false
+  },
+  "guns": {
+    "guns_interaction_hand": true,
+    "acceptAttachmentDrag": true
+  },
+  "drops": {
+    "advanced_drops_models": true,
+    "drops_despawn_time": 120,
+    "advanced_drops_models_everything": false
+  },
+  "hud": {
+    "hitmarkers": true,
+    "enable_crosshair": true,
+    "dynamic_crosshair": true,
+    "ammo_count": true,
+    "snap_fade_hit": true,
+    "isDynamicFov": false,
+    "ads_blur": false,
+    "handDepthRangeMax": 0.6,
+    "handDepthRangeMin": 0.0,
+    "projectionScale": {
+      "x": 0.125,
+      "y": 0.125,
+      "z": 0.125
+    },
+    "eraseScopeDepth": 1.0,
+    "shadersColorTexID": 0,
+    "alwaysRenderPIPWorld": false,
+    "autoSwitchToFirstView": true
+  },
+  "walks_sounds": {
+    "walk_sounds": true,
+    "volume": 0.3
+  },
+  "casings_drops": {
+    "despawn_time": 10
+  },
+  "killFeed": {
+    "enableKillFeed": true,
+    "sendDefaultKillMessage": false,
+    "messageDuration": 10,
+    "messageList": [
+      "\u0026a{killer} \u0026dkilled \u0026c{victim}",
+      "\u0026a{killer} \u0026fdestroyed \u0026c{victim}",
+      "\u0026a{killer} \u0026fshot \u0026c{victim}"
+    ]
+  },
+  "model_optimization": true,
+  "debug_hits_message": false,
+  "dev_mode": false,
+  "version": "2024.2.4.5f"
+}
