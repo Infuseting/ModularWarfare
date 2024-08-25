@@ -11,12 +11,12 @@ public class ExtraContainer extends ItemStackHandler implements IExtraItemHandle
     private EntityPlayer player;
 
     public ExtraContainer(final EntityPlayer player) {
-        super(5);
+        super(20);
         this.player = player;
     }
 
     public ExtraContainer() {
-        super(5);
+        super(20);
     }
 
     public void setPlayer(final EntityPlayer player) {

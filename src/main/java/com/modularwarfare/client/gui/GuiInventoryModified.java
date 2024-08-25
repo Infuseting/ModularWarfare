@@ -5,6 +5,7 @@ import com.modularwarfare.common.backpacks.ItemBackpack;
 import com.modularwarfare.common.container.ContainerInventoryModified;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.client.renderer.RenderHelper;
@@ -31,9 +32,10 @@ public class GuiInventoryModified extends InventoryEffectRenderer {
     public GuiInventoryModified(final EntityPlayer player) {
         super(new ContainerInventoryModified(player.inventory, !player.getEntityWorld().isRemote, player));
         this.allowUserInput = true;
-        this.xSize = 176;
+        ScaledResolution scaledResolution  = new ScaledResolution(Minecraft.getMinecraft());
+        this.xSize = scaledResolution.getScaledWidth();
         /** The Y size of the inventory window in pixels. */
-        this.ySize = 185;
+        this.ySize = scaledResolution.getScaledHeight();
     }
 
     private void resetGuiLeft() {

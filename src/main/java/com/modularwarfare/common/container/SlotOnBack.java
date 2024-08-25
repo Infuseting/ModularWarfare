@@ -1,19 +1,17 @@
 package com.modularwarfare.common.container;
 
-import com.modularwarfare.common.backpacks.ItemBackpack;
+import com.modularwarfare.api.MWArmorType;
+import com.modularwarfare.common.armor.ItemSpecialArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
-/**
- * Backpack slot in the players inventory
- */
-public class SlotBackpack extends SlotItemHandler {
+public class SlotOnBack extends SlotItemHandler {
     private int width;
     private int height;
-    public SlotBackpack(final IItemHandler inv, final int index, final int xPosition, final int yPosition, final int width, final int height) {
+    public SlotOnBack(final IItemHandler inv, final int index, final int xPosition, final int yPosition, final int width, final int height) {
         super(inv, index, xPosition, yPosition);
         this.height = height;
         this.width = width;
@@ -26,6 +24,10 @@ public class SlotBackpack extends SlotItemHandler {
 
     @Override
     public boolean isItemValid(@Nonnull final ItemStack stack) {
-        return stack.getItem() instanceof ItemBackpack;
+        if (stack.getItem() instanceof ItemSpecialArmor) {
+            ItemSpecialArmor armor = (ItemSpecialArmor) stack.getItem();
+            return (armor.armorType == MWArmorType.OnBack);
+        }
+        return false;
     }
 }

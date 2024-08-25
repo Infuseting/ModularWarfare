@@ -43,156 +43,233 @@ public class ContainerInventoryModified extends Container {
         this.isLocalWorld = isLocalWorld;
         this.thePlayer = player;
         this.onCraftMatrixChanged(this.craftMatrix);
-
-        this.addSlots(playerInv, player);
+        //this.addSlots(playerInv, player);
+        this.armorSlot(playerInv, player);
     }
-
-    public void addSlots(final InventoryPlayer playerInv, final EntityPlayer player) {
+    public void armorSlot(final InventoryPlayer playerInv, final EntityPlayer player) {
         this.inventorySlots.clear();
         this.inventoryItemStacks.clear();
-
         this.extra = player.getCapability(CapabilityExtra.CAPABILITY, null);
 
-        this.addSlotToContainer(new SlotCrafting(playerInv.player, this.craftMatrix, this.craftResult, 0, 154, 28));
-
-        for (int i = 0; i < 2; ++i) {
-            for (int j = 0; j < 2; ++j) {
-                this.addSlotToContainer(new Slot(this.craftMatrix, j + (i * 2), 116 + (j * 18), 18 + (i * 18)));
-            }
-        }
-
-        for (int k = 0; k < 4; k++) {
-            final EntityEquipmentSlot slot = EQUIPMENT_SLOTS[k];
-            this.addSlotToContainer(new Slot(playerInv, 36 + (3 - k), 8, 8 + (k * 18)) {
-                @Override
-                public int getSlotStackLimit() {
-                    return 1;
-                }
-
-                @Override
-                public boolean isItemValid(final ItemStack stack) {
-                    return stack.getItem().isValidArmor(stack, slot, player);
-                }
-
-                @Override
-                public boolean canTakeStack(final EntityPlayer playerIn) {
-                    final ItemStack itemstack = this.getStack();
-                    return !itemstack.isEmpty() && !playerIn.isCreative() && EnchantmentHelper.hasBindingCurse(itemstack) ? false
-                            : super.canTakeStack(playerIn);
-                }
-
-                @Override
-                public String getSlotTexture() {
-                    return ItemArmor.EMPTY_SLOT_NAMES[slot.getIndex()];
-                }
-            });
-        }
-
-        // Second light gray slots bar
-        for (int i = 0; i < 3; ++i) {
-            for (int j = 0; j < 9; ++j) {
-                this.addSlotToContainer(new Slot(playerInv, j + ((i + 1) * 9), 8 + (j * 18), 102 - 12 + (i * 18)));
-            }
-        }
-
-        // First light gray slots bar
-        for (int i = 0; i < 9; ++i) {
-            this.addSlotToContainer(new Slot(playerInv, i, 8 + (i * 18), 166 - 12));
-        }
-
-        // This is for the OFFHAND MouseHover
-        this.addSlotToContainer(new Slot(playerInv, 40, 76, 62) {
-            @Override
-            @Nullable
-            @SideOnly(Side.CLIENT)
-            public String getSlotTexture() {
-                return "minecraft:items/empty_armor_slot_shield";
-            }
-        });
-
-        this.addSlotToContainer(new SlotBackpack(this.extra, 0, ModUtil.BACKPACK_SLOT_OFFSET_X, ModUtil.BACKPACK_SLOT_OFFSET_Y + 1) {
+        this.addSlotToContainer(new SlotEarPiece(this.extra, 1, ModUtil.EAR_PIECE_SLOT_X, ModUtil.EAR_PIECE_SLOT_Y, ModUtil.EAR_PIECE_SLOT_W, ModUtil.EAR_PIECE_SLOT_H) {
             @Override
             public void onSlotChanged() {
-                ContainerInventoryModified.this.updateBackpack();
-                ContainerInventoryModified.this.addSlots(playerInv, player);
+                ContainerInventoryModified.this.armorSlot(playerInv, player);
+                super.onSlotChanged();
+            }
+
+
+        });
+        this.addSlotToContainer(new SlotHeadWear(this.extra, 2, ModUtil.HEAD_WEAR_SLOT_X, ModUtil.HEAD_WEAR_SLOT_Y, ModUtil.HEAD_WEAR_SLOT_W, ModUtil.HEAD_WEAR_SLOT_H) {
+            @Override
+            public void onSlotChanged() {
+                ContainerInventoryModified.this.armorSlot(playerInv, player);
                 super.onSlotChanged();
             }
         });
-
-
-        this.addSlotToContainer(new SlotVest(this.extra, 1, ModUtil.BACKPACK_SLOT_OFFSET_X, ModUtil.BACKPACK_SLOT_OFFSET_Y + 1 + 18) {
+        this.addSlotToContainer(new SlotFaceCover(this.extra, 3, ModUtil.FACE_COVER_SLOT_X, ModUtil.FACE_COVER_SLOT_Y, ModUtil.FACE_COVER_SLOT_W, ModUtil.FACE_COVER_SLOT_H) {
             @Override
             public void onSlotChanged() {
-                ContainerInventoryModified.this.addSlots(playerInv, player);
+                ContainerInventoryModified.this.armorSlot(playerInv, player);
                 super.onSlotChanged();
             }
         });
-
-        this.updateBackpack();
-    }
-
-
-    private void updateBackpack() {
-        if (this.extra.getStackInSlot(0).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-            final IItemHandler backpackInvent = this.extra.getStackInSlot(0).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-
-            int xP = 0;
-            int yP = 0;
-            final int x = 1 + ModUtil.BACKPACK_CONTENT_OFFSET_X;
-            final int y = 1 + ModUtil.BACKPACK_CONTENT_OFFSET_Y;
-
-            for (int i = 0; i < backpackInvent.getSlots(); i++) {
-                this.addSlotToContainer(
-                        new SlotItemHandler(backpackInvent, i, x + (xP * ModUtil.INVENTORY_SLOT_SIZE_PIXELS),
-                                -1 + y + (yP * ModUtil.INVENTORY_SLOT_SIZE_PIXELS)) {
-                            // Don't allow nesting backpacks if they are bigger (or have the same size) as the current extraslots
-                            @Override
-                            public boolean isItemValid(@Nonnull final ItemStack stack) {
-                                if (stack.getItem() instanceof ItemBackpack) {
-                                    ItemBackpack itemBackpack = ((ItemBackpack) extra.getStackInSlot(0).getItem());
-                                    if (itemBackpack.type.allowSmallerBackpackStorage) {
-                                        final int otherBackpackSize = ((ItemBackpack) stack.getItem()).type.size;
-                                        final int thisBackpackSize = backpackInvent.getSlots();
-                                        if (otherBackpackSize <= thisBackpackSize) {
-                                            return true;
-                                        }
-                                        return false;
-                                    } else {
-                                        return false;
-                                    }
-                                }
-                                if (stack.getItem() instanceof ItemGun) {
-                                    ItemBackpack itemBackpack = ((ItemBackpack) extra.getStackInSlot(0).getItem());
-                                    if (itemBackpack.type.maxWeaponStorage != null) {
-                                        if (this.getNumberOfGuns(backpackInvent) >= itemBackpack.type.maxWeaponStorage) {
-                                            return false;
-                                        }
-                                    }
-                                }
-                                return super.isItemValid(stack);
-                            }
-
-                            private int getNumberOfGuns(IItemHandler backpackInvent) {
-                                int numGuns = 0;
-                                for (int i = 0; i < backpackInvent.getSlots(); i++) {
-                                    if (backpackInvent.getStackInSlot(i) != null) {
-                                        if (backpackInvent.getStackInSlot(i).getItem() instanceof ItemGun) {
-                                            numGuns++;
-                                        }
-                                    }
-                                }
-                                return numGuns;
-                            }
-                        });
-                xP++;
-
-                if ((xP % 4) == 0) {
-                    xP = 0;
-                    yP++;
-                }
+        this.addSlotToContainer(new SlotArmBand(this.extra, 4, ModUtil.ARM_BAND_SLOT_X, ModUtil.ARM_BAND_SLOT_Y, ModUtil.ARM_BAND_SLOT_W, ModUtil.ARM_BAND_SLOT_H) {
+            @Override
+            public void onSlotChanged() {
+                ContainerInventoryModified.this.armorSlot(playerInv, player);
+                super.onSlotChanged();
             }
-        }
+        });
+        this.addSlotToContainer(new SlotBodyArmor(this.extra, 5, ModUtil.BODY_ARMOR_SLOT_X, ModUtil.BODY_ARMOR_SLOT_Y, ModUtil.BODY_ARMOR_SLOT_W, ModUtil.BODY_ARMOR_SLOT_H) {
+            @Override
+            public void onSlotChanged() {
+                ContainerInventoryModified.this.armorSlot(playerInv, player);
+                super.onSlotChanged();
+            }
+        });
+        this.addSlotToContainer(new SlotEyeWear(this.extra, 6, ModUtil.EYE_WEAR_SLOT_X, ModUtil.EYE_WEAR_SLOT_Y, ModUtil.EYE_WEAR_SLOT_W, ModUtil.EYE_WEAR_SLOT_H) {
+            @Override
+            public void onSlotChanged() {
+                ContainerInventoryModified.this.armorSlot(playerInv, player);
+                super.onSlotChanged();
+            }
+        });
+        this.addSlotToContainer(new SlotOnSling(this.extra, 7, ModUtil.ON_SLING_SLOT_X, ModUtil.ON_SLING_SLOT_Y, ModUtil.ON_SLING_SLOT_W, ModUtil.ON_SLING_SLOT_H) {
+            @Override
+            public void onSlotChanged() {
+                ContainerInventoryModified.this.armorSlot(playerInv, player);
+                super.onSlotChanged();
+            }
+        });
+        this.addSlotToContainer(new SlotOnBack(this.extra, 8, ModUtil.ON_BACK_SLOT_X, ModUtil.ON_BACK_SLOT_Y, ModUtil.ON_BACK_SLOT_W, ModUtil.ON_BACK_SLOT_H) {
+            @Override
+            public void onSlotChanged() {
+                ContainerInventoryModified.this.armorSlot(playerInv, player);
+                super.onSlotChanged();
+            }
+        });
+        this.addSlotToContainer(new SlotHolster(this.extra, 9, ModUtil.HOLSTER_SLOT_X, ModUtil.HOLSTER_SLOT_Y, ModUtil.HOLSTER_SLOT_W, ModUtil.HOLSTER_SLOT_H) {
+            @Override
+            public void onSlotChanged() {
+                ContainerInventoryModified.this.armorSlot(playerInv, player);
+                super.onSlotChanged();
+            }
+        });
+        this.addSlotToContainer(new SlotOnBack(this.extra, 10, ModUtil.SCABBARD_SLOT_X, ModUtil.SCABBARD_SLOT_Y, ModUtil.SCABBARD_SLOT_W, ModUtil.SCABBARD_SLOT_H) {
+            @Override
+            public void onSlotChanged() {
+                ContainerInventoryModified.this.armorSlot(playerInv, player);
+                super.onSlotChanged();
+            }
+        });
     }
+    //public void addSlots(final InventoryPlayer playerInv, final EntityPlayer player) {
+    //    this.inventorySlots.clear();
+    //    this.inventoryItemStacks.clear();
+//
+    //    this.extra = player.getCapability(CapabilityExtra.CAPABILITY, null);
+//
+    //    this.addSlotToContainer(new SlotCrafting(playerInv.player, this.craftMatrix, this.craftResult, 0, 154, 28));
+//
+    //    for (int i = 0; i < 2; ++i) {
+    //        for (int j = 0; j < 2; ++j) {
+    //            this.addSlotToContainer(new Slot(this.craftMatrix, j + (i * 2), 116 + (j * 18), 18 + (i * 18)));
+    //        }
+    //    }
+//
+    //    for (int k = 0; k < 4; k++) {
+    //        final EntityEquipmentSlot slot = EQUIPMENT_SLOTS[k];
+    //        this.addSlotToContainer(new Slot(playerInv, 36 + (3 - k), 8, 8 + (k * 18)) {
+    //            @Override
+    //            public int getSlotStackLimit() {
+    //                return 1;
+    //            }
+//
+    //            @Override
+    //            public boolean isItemValid(final ItemStack stack) {
+    //                return stack.getItem().isValidArmor(stack, slot, player);
+    //            }
+//
+    //            @Override
+    //            public boolean canTakeStack(final EntityPlayer playerIn) {
+    //                final ItemStack itemstack = this.getStack();
+    //                return !itemstack.isEmpty() && !playerIn.isCreative() && EnchantmentHelper.hasBindingCurse(itemstack) ? false
+    //                        : super.canTakeStack(playerIn);
+    //            }
+//
+    //            @Override
+    //            public String getSlotTexture() {
+    //                return ItemArmor.EMPTY_SLOT_NAMES[slot.getIndex()];
+    //            }
+    //        });
+    //    }
+//
+    //    // Second light gray slots bar
+    //    for (int i = 0; i < 3; ++i) {
+    //        for (int j = 0; j < 9; ++j) {
+    //            this.addSlotToContainer(new Slot(playerInv, j + ((i + 1) * 9), 8 + (j * 18), 102 - 12 + (i * 18)));
+    //        }
+    //    }
+//
+    //    // First light gray slots bar
+    //    for (int i = 0; i < 9; ++i) {
+    //        this.addSlotToContainer(new Slot(playerInv, i, 8 + (i * 18), 166 - 12));
+    //    }
+//
+    //    // This is for the OFFHAND MouseHover
+    //    this.addSlotToContainer(new Slot(playerInv, 40, 76, 62) {
+    //        @Override
+    //        @Nullable
+    //        @SideOnly(Side.CLIENT)
+    //        public String getSlotTexture() {
+    //            return "minecraft:items/empty_armor_slot_shield";
+    //        }
+    //    });
+//
+    //    this.addSlotToContainer(new SlotBackpack(this.extra, 0, ModUtil.BACKPACK_SLOT_OFFSET_X, ModUtil.BACKPACK_SLOT_OFFSET_Y + 1) {
+    //        @Override
+    //        public void onSlotChanged() {
+    //            ContainerInventoryModified.this.updateBackpack();
+    //            ContainerInventoryModified.this.addSlots(playerInv, player);
+    //            super.onSlotChanged();
+    //        }
+    //    });
+//
+//
+    //    this.addSlotToContainer(new SlotVest(this.extra, 1, ModUtil.BACKPACK_SLOT_OFFSET_X, ModUtil.BACKPACK_SLOT_OFFSET_Y + 1 + 18) {
+    //        @Override
+    //        public void onSlotChanged() {
+    //            ContainerInventoryModified.this.addSlots(playerInv, player);
+    //            super.onSlotChanged();
+    //        }
+    //    });
+//
+    //    this.updateBackpack();
+    //}
+
+
+    //private void updateBackpack() {
+    //    if (this.extra.getStackInSlot(0).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+    //        final IItemHandler backpackInvent = this.extra.getStackInSlot(0).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+//
+    //        int xP = 0;
+    //        int yP = 0;
+    //        final int x = 1 + ModUtil.BACKPACK_CONTENT_OFFSET_X;
+    //        final int y = 1 + ModUtil.BACKPACK_CONTENT_OFFSET_Y;
+//
+    //        for (int i = 0; i < backpackInvent.getSlots(); i++) {
+    //            this.addSlotToContainer(
+    //                    new SlotItemHandler(backpackInvent, i, x + (xP * ModUtil.INVENTORY_SLOT_SIZE_PIXELS),
+    //                            -1 + y + (yP * ModUtil.INVENTORY_SLOT_SIZE_PIXELS)) {
+    //                        // Don't allow nesting backpacks if they are bigger (or have the same size) as the current extraslots
+    //                        @Override
+    //                        public boolean isItemValid(@Nonnull final ItemStack stack) {
+    //                            if (stack.getItem() instanceof ItemBackpack) {
+    //                                ItemBackpack itemBackpack = ((ItemBackpack) extra.getStackInSlot(0).getItem());
+    //                                if (itemBackpack.type.allowSmallerBackpackStorage) {
+    //                                    final int otherBackpackSize = ((ItemBackpack) stack.getItem()).type.size;
+    //                                    final int thisBackpackSize = backpackInvent.getSlots();
+    //                                    if (otherBackpackSize <= thisBackpackSize) {
+    //                                        return true;
+    //                                    }
+    //                                    return false;
+    //                                } else {
+    //                                    return false;
+    //                                }
+    //                            }
+    //                            if (stack.getItem() instanceof ItemGun) {
+    //                                ItemBackpack itemBackpack = ((ItemBackpack) extra.getStackInSlot(0).getItem());
+    //                                if (itemBackpack.type.maxWeaponStorage != null) {
+    //                                    if (this.getNumberOfGuns(backpackInvent) >= itemBackpack.type.maxWeaponStorage) {
+    //                                        return false;
+    //                                    }
+    //                                }
+    //                            }
+    //                            return super.isItemValid(stack);
+    //                        }
+//
+    //                        private int getNumberOfGuns(IItemHandler backpackInvent) {
+    //                            int numGuns = 0;
+    //                            for (int i = 0; i < backpackInvent.getSlots(); i++) {
+    //                                if (backpackInvent.getStackInSlot(i) != null) {
+    //                                    if (backpackInvent.getStackInSlot(i).getItem() instanceof ItemGun) {
+    //                                        numGuns++;
+    //                                    }
+    //                                }
+    //                            }
+    //                            return numGuns;
+    //                        }
+    //                    });
+    //            xP++;
+//
+    //            if ((xP % 4) == 0) {
+    //                xP = 0;
+    //                yP++;
+    //            }
+    //        }
+    //    }
+    //}
 
     @Override
     public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {

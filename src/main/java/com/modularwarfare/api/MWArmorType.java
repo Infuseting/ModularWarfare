@@ -10,9 +10,19 @@ public enum MWArmorType {
     @SerializedName("chest") Chest,
     @SerializedName("legs") Legs,
     @SerializedName("feet") Feet,
-    @SerializedName("vest") Vest(1);
+    @SerializedName("vest") Vest(1),
+    @SerializedName("armband") ArmBand(2),
+    @SerializedName("bodyarmor") BodyArmor(3),
+    @SerializedName("earpiece") EarPiece(4),
+    @SerializedName("eyewear") EyeWear(5),
+    @SerializedName("facecover") FaceCover(6),
+    @SerializedName("headwear") HeadWear(7),
+    @SerializedName("holster") Holster(8),
+    @SerializedName("onback") OnBack(9),
+    @SerializedName("onsling") OnSling(10),
+    @SerializedName("scabbard") Scabbard(11);
 
-    int[] validSlots;
+    int[] validSlots ;
 
     public static MWArmorType fromVanillaSlot(EntityEquipmentSlot entityEquipmentSlot) {
         if(entityEquipmentSlot==EntityEquipmentSlot.HEAD) {
@@ -29,7 +39,7 @@ public enum MWArmorType {
         }
         return null;
     }
-    
+
     private MWArmorType(int... validSlots) {
         this.validSlots = validSlots;
     }

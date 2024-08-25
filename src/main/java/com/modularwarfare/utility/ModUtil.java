@@ -28,10 +28,53 @@ import java.util.List;
 public class ModUtil {
 
     public static final int INVENTORY_SLOT_SIZE_PIXELS = 18;
-    public static final int BACKPACK_SLOT_OFFSET_X = 76;
-    public static final int BACKPACK_SLOT_OFFSET_Y = 7;
-    public static final int BACKPACK_CONTENT_OFFSET_X = 180;
-    public static final int BACKPACK_CONTENT_OFFSET_Y = 18;
+    public static final int EAR_PIECE_SLOT_X = 52;
+    public static final int EAR_PIECE_SLOT_Y = 92;
+    public static final int EAR_PIECE_SLOT_W = 88;
+    public static final int EAR_PIECE_SLOT_H = 88;
+    public static final int HEAD_WEAR_SLOT_X = 177;
+    public static final int HEAD_WEAR_SLOT_Y = 92;
+    public static final int HEAD_WEAR_SLOT_W = 88;
+    public static final int HEAD_WEAR_SLOT_H = 88;
+    public static final int FACE_COVER_SLOT_X = 305;
+    public static final int FACE_COVER_SLOT_Y = 92;
+    public static final int FACE_COVER_SLOT_W = 88;
+    public static final int FACE_COVER_SLOT_H = 88;
+
+
+    public static final int ARM_BAND_SLOT_X = 52;
+    public static final int ARM_BAND_SLOT_Y = 199;
+    public static final int ARM_BAND_SLOT_W = 88;
+    public static final int ARM_BAND_SLOT_H = 45;
+    public static final int BODY_ARMOR_SLOT_X = 177;
+    public static final int BODY_ARMOR_SLOT_Y = 199;
+    public static final int BODY_ARMOR_SLOT_W = 88;
+    public static final int BODY_ARMOR_SLOT_H = 88;
+    public static final int EYE_WEAR_SLOT_X = 305;
+    public static final int EYE_WEAR_SLOT_Y = 199;
+    public static final int EYE_WEAR_SLOT_W = 88;
+    public static final int EYE_WEAR_SLOT_H = 88;
+
+
+    public static final int ON_SLING_SLOT_X = 51;
+    public static final int ON_SLING_SLOT_Y = 300;
+    public static final int ON_SLING_SLOT_W = 213;
+    public static final int ON_SLING_SLOT_H = 88;
+    public static final int HOLSTER_SLOT_X = 305;
+    public static final int HOLSTER_SLOT_Y = 301;
+    public static final int HOLSTER_SLOT_W = 88;
+    public static final int HOLSTER_SLOT_H = 88;
+
+
+    public static final int ON_BACK_SLOT_X = 51;
+    public static final int ON_BACK_SLOT_Y = 414;
+    public static final int ON_BACK_SLOT_W = 213;
+    public static final int ON_BACK_SLOT_H = 88;
+    public static final int SCABBARD_SLOT_X = 305;
+    public static final int SCABBARD_SLOT_Y = 414;
+    public static final int SCABBARD_SLOT_W = 88;
+    public static final int SCABBARD_SLOT_H = 88;
+
 
     private static String OS = System.getProperty("os.name").toLowerCase();
 
