@@ -37,3 +37,20 @@ mwf:gui.tooltip.help=Press [L-CTRL] to get help
 mwf:gui.tooltip.reload=Press [R] Reload
 
 mwf:gui.modify.none=None
+
+mwf:gui.inventory.ear_piece=Ear Piece
+mwf:gui.inventory.head_wear=Head Wear
+mwf:gui.inventory.face_cover=Face Cover
+mwf:gui.inventory.arm_band=Arm Band
+mwf:gui.inventory.body_armor=Body Armor
+mwf:gui.inventory.eye_wear=Eye Wear
+mwf:gui.inventory.on_sling=On Sling
+mwf:gui.inventory.holster=Holster
+mwf:gui.inventory.on_back=On Back
+mwf:gui.inventory.scabbard=Scabbard
+mwf:gui.inventory.vest=Tactical Rig
+mwf:gui.inventory.backpack=Backpack
+mwf:gui.inventory.pouch=Pouch
+
+mwf:gui.inventory.stash=Stash
+mwf:gui.inventory.chest=Chest

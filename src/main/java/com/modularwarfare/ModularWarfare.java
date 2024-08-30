@@ -10,6 +10,7 @@ import com.modularwarfare.api.ItemRegisterEvent;
 import com.modularwarfare.client.customplayer.CPEventHandler;
 import com.modularwarfare.client.customplayer.CustomPlayerConfig;
 import com.modularwarfare.client.fpp.enhanced.AnimationType.AnimationTypeJsonAdapter.AnimationTypeException;
+import com.modularwarfare.client.gui.GuiInGame;
 import com.modularwarfare.common.CommonProxy;
 import com.modularwarfare.common.MWTab;
 import com.modularwarfare.common.armor.ItemMWArmor;
@@ -502,7 +503,9 @@ public class ModularWarfare {
         }
         
         PROXY.preload();
-
+        if (FMLCommonHandler.instance().getSide().isClient()) {
+            MinecraftForge.EVENT_BUS.register(new GuiInGame());
+        }
         if (FMLCommonHandler.instance().getSide().isServer()) {
             // Creates directory if doesn't exist
             MOD_DIR = new File(event.getModConfigurationDirectory().getParentFile(), "ModularWarfare");

@@ -76,6 +76,15 @@ public class ModUtil {
     public static final int SCABBARD_SLOT_H = 88;
 
 
+
+    public static final int VEST_SLOT_X = 476;
+    public static final int VEST_SLOT_Y = 65;
+    public static final int VEST_SLOT_W = 88;
+    public static final int VEST_SLOT_H = 88;
+    public static final int BACKPACK_SLOT_W = 88;
+    public static final int BACKPACK_SLOT_H = 88;
+
+
     private static String OS = System.getProperty("os.name").toLowerCase();
 
     public static boolean isWindows() {

@@ -26,6 +26,7 @@ public class ItemMWArmor extends ItemArmor implements ISpecialArmor {
     public ArmorType type;
     public BaseType baseType;
     public String internalName;
+    public String color;
 
     public ItemMWArmor(final ArmorType type, final MWArmorType armorSlot) {
         super(ItemArmor.ArmorMaterial.LEATHER, 0, EntityEquipmentSlot.fromString(armorSlot.name().toLowerCase()));

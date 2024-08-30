@@ -29,7 +29,7 @@ import java.util.HashMap;
 /***
  * Modified copy of Vanilla's Player inventory
  */
-public class ContainerInventoryModified extends Container {
+    public class ContainerInventoryModified extends Container {
 
     private static final EntityEquipmentSlot[] EQUIPMENT_SLOTS = new EntityEquipmentSlot[]{EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST,
             EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET};
